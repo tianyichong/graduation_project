@@ -4,13 +4,12 @@
 
 {% block head %}
 {{ super() }}
-<link rel="icon" href="{{ url_for('static', filename='image.jpg') }}" type="image/x-icon">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="stylesheet" type="text/css" style="static/styles.css">
 {% endblock %}
 
 {% block navbar %}
-<div class="topImg">
-    <p>putong</p>
+<div class="top-img">
+    <p id="nav">putong</p>
 </div>
 {% endblock %}
 
@@ -25,9 +24,4 @@
 
     {% block page_content %}{% endblock %}
 </div>
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
-{{ moment.include_moment() }}
 {% endblock %}

@@ -1,10 +1,16 @@
 {% extends "first_base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Flask{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
     <h1>Hello</h1>
+</div>
+<div>
+    <h1>请仔细阅读下面内容</h1>
+    <p><a href="{{ url_for('main.instruction_candidates') }}">考生须知</a></p>
+    <p><a href="{{ url_for('main.register_process') }}">报名流程</a></p>
+    <p><a href="{{ url_for('main.pay_process') }}">缴费流程</a></p>
+    <p><a href="{{ url_for('auth.login') }}">我已阅读以上内容</a></p>
 </div>
 {% endblock %}
