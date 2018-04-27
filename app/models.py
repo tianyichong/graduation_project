@@ -6,10 +6,11 @@ from . import db, login_manager
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Inter, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
+
 
     @property
     def password(self):
@@ -26,3 +27,6 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+
