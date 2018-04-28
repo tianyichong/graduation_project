@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, \
+    ValidationError
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from ..models import User
 
@@ -29,11 +30,11 @@ class RegistrationForm(FlaskForm):
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
-            raise ValidationError('Email already registered.')
+            raise ValidationError('邮箱已经注册')
 
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
-            raise ValidationError('Username already in use.')
+            raise ValidationError('用户名已被使用')
 
 
 # 重置密码表单
@@ -59,5 +60,13 @@ class ChangePasswordForm(FlaskForm):
     submit = SubmitField('Update Password')
 
 
+# 更改邮箱表单
+class ChangeEmailForm(FlaskForm):
+    new_email = StringField('New Email', validators=[DataRequired(), Length(1, 64),
+                                                     Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Update Email')
 
-# 修改邮箱表单
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('邮箱已经注册')
