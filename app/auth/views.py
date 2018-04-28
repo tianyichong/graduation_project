@@ -1,7 +1,8 @@
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from . import auth
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, \
+    ChangePasswordForm
 from .. import db
 from ..models import User
 from ..email import send_email
@@ -60,6 +61,14 @@ def register():
     return render_template('auth/register.html', form=form)
 
 
+# 登出路由
+@auth.route('/logout')
+def logout():
+    logout_user()
+    flash('You have been logged out.')
+    return render_template('index.html')
+
+
 # 确认账户
 @auth.route('/confirm/<token>')
 @login_required
@@ -85,8 +94,54 @@ def resend_confirmation():
     return redirect(url_for('main.commit'))
 
 
-# 更改密码路由
+# 重置密码路由
 @auth.route('/reset', methods=['GET', 'POST'])
-def password_reset_request():
-    return render_template('auth/reset_password.html')
+def reset_password_request():
+    if not current_user.is_anonymous:
+        return redirect(url_for('main.index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            token = user.generate_reset_token()
+            send_email(user.email, 'Reset Your Password',
+                       'auth/email/reset_password',
+                       user=user, token=token,
+                       next=request.args.get('next'))
+            flash('An email with instructions to reset your password has been '
+                  'sent to you.')
+            return redirect(url_for('auth.login'))
+    return render_template('auth/reset_password.html', form=form)
 
+
+# 确认重置密码路由
+@auth.route('/resrt/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if not current_user.is_anonymous:
+        return redirect(url_for('main.commit'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        if User.reset_password(token, form.password.data):
+            db.session.commit()
+            flash('Your password has been updated.')
+            return redirect(url_for('auth.login'))
+        else:
+            return redirect(url_for('main.index'))
+    return render_template('auth/reset_password.html', form=form)
+
+
+# 修改密码路由
+@auth.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Your passwrod has been updated.')
+            return redirect(url_for('main.commit'))
+        else:
+            flash('Invalid password.')
+    return render_template('auth/change_password.html', form=form)
