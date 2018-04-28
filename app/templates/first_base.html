@@ -4,12 +4,13 @@
 
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" type="text/css" style="static/styles.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='first_styles.css') }}">
 {% endblock %}
+
 
 {% block navbar %}
 <div class="top-img">
-    <p id="nav">putong</p>
+    <h1>高考报名系统</h1>
 </div>
 {% endblock %}
 

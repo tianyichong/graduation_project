@@ -32,8 +32,8 @@ class User(UserMixin, db.Model):
     def verity_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    # 生成一个token
-    def generate_confirmation_token(self, expiration=3600):
+    # 生成一个验证token
+    def generate_confirmation_token(self, expiration=10):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id}).decode('utf-8')
 
@@ -48,6 +48,25 @@ class User(UserMixin, db.Model):
             return False
         self.confirmed = True
         db.session.add(self)
+        return True
+
+    # 生成一个 reset_password 的 token
+    def generate_reset_token(self, expiration=60):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id}).decode('utf-8')
+
+    @staticmethod
+    def reset_password(token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        user = User.query.get(data.get('reset'))
+        if user is None:
+            return False
+        user.password = new_password
+        db.session.add(user)
         return True
 
     def __repr__(self):

@@ -24,3 +24,8 @@ def register_process():
 def pay_process():
     return render_template('pay_process.html')
 
+
+@main.route('/commit', methods=['GET', 'POST'])
+def commit():
+    return render_template('commit.html')
+
