@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block bread %}
+{% if current_user.is_authenticated %}
+    {% if current_user.enrolment %}
+    <ol class="breadcrumb">
+        <li class="active"></li>
+        <li><a href="{{ url_for('main.commit') }}">commit</a></li>
+        <li>enroll</li>
+        <li><a href="{{ url_for('main.information') }}">infromation</a></li>
+    </ol>
+    {% else %}
+        <ol class="breadcrumb">
+            <li class="active"></li>
+            <li><a href="{{ url_for('main.commit') }}">commit</a></li>
+            <li>enroll</li>
+            <li>infromation</li>
+        </ol>
+    {% endif %}
+{% endif %}
+{% endblock %}
+
+
+{% block page_content %}
+<div class="page-header">
+    <h1>欢迎使用普通高考报名系统</h1>
+</div>
+<div>
+    <h2>仔细阅读下面内容后登录报名</h2>
+    <h3><a href="{{ url_for('main.instruction_candidates') }}">考生须知</a></h3>
+    <h3><a href="{{ url_for('main.register_process') }}">报名流程</a></h3>
+    <h3><a href="{{ url_for('main.pay_process') }}">缴费流程</a></h3>
+</div>
+{% endblock %}

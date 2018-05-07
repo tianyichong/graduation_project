@@ -1,28 +1,19 @@
-{% extends "base.html" %}
+{% extends "last_base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-
-
-
-{% block bread %}
-<ol class="breadcrumb">
-    <li></li>
-    <li><a href="{{ url_for('main.commit') }}">commit</a></li>
-    <li>enroll</li>
-    <li class="active">information</li>
-</ol>
-{% endblock %}
-
-
 {% block page_content %}
-<div class="page-header">
-    <h1>Hello, information</h1>
+<div>
+    <h3>根据考生号查询学生信息</h3>
+</div>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
 </div>
 
+{% if user %}
 <div style="text-align:center">
 	<form class="bs-example bs-example-form" role="form" method="post">
 		<table class="table table-bordered">
-            <caption>请填写报名信息</caption>
+            <caption>考生{{ user.name }}的详细信息</caption>
 			<thead>
                 <tr>
                     <th>报名点</th>
@@ -51,66 +42,66 @@
                 </tr>
 				<tr>
 					<th>姓名</th>
-					<td>{{ current_user.name }}</td>
+					<td>{{ user.name }}</td>
 					<th>性别</th>
-					<td>{{ current_user.sex }}</td>
+					<td>{{ user.sex }}</td>
 				</tr>
                 <tr>
                     <th>身份证号</th>
-                    <td>{{ current_user.id_number }}</td>
+                    <td>{{ user.id_number }}</td>
 
                     <th>民族</th>
-                    <td>{{ current_user.nation }}</td>
+                    <td>{{ user.nation }}</td>
                 </tr>
                 <tr>
                     <th>出生日期</th>
-                    <td>{{ current_user.birthday }}</td>
+                    <td>{{ user.birthday }}</td>
 
                     <th>学籍号</th>
-                    <td>{{ current_user.student_id }}</td>
+                    <td>{{ user.student_id }}</td>
                 </tr>
                 <tr>
                     <th>政治面貌</th>
-                    <td>{{ current_user.political_status }}</td>
+                    <td>{{ user.political_status }}</td>
 
                     <th>户口所在地</th>
-                    <td>{{ current_user.native_place }}</td>
+                    <td>{{ user.native_place }}</td>
                 </tr>
                 <tr>
                     <th>通讯地址</th>
-                    <td>{{ current_user.postal_address }}</td>
+                    <td>{{ user.postal_address }}</td>
 
                     <th>邮政编码</th>
-                    <td>{{ current_user.postal_code }}</td>
+                    <td>{{ user.postal_code }}</td>
 
                 </tr>
                 <tr>
                     <th>收件人</th>
-                    <td>{{ current_user.recipients }}</td>
+                    <td>{{ user.recipients }}</td>
 
                     <th>联系人</th>
-                    <td>{{ current_user.contacts }}</td>
+                    <td>{{ user.contacts }}</td>
                 </tr>
                 <tr>
                     <th>宅电</th>
-                    <td>{{ current_user.home_phone_number }}</td>
+                    <td>{{ user.home_phone_number }}</td>
 
                     <th>手机</th>
-                    <td>{{ current_user.phone_number }}</td>
+                    <td>{{ user.phone_number }}</td>
                 </tr>
                 <tr>
                     <th>毕业院校</th>
-                    <td>{{ current_user.high_school }}</td>
+                    <td>{{ user.high_school }}</td>
 
                     <th>班级</th>
-                    <td>{{ current_user.class_in_school }}</td>
+                    <td>{{ user.class_in_school }}</td>
                 </tr>
                 <tr>
                     <th>毕业类别</th>
-                    <td>{{ current_user.graduation_category }}</td>
+                    <td>{{ user.graduation_category }}</td>
 
                     <th>考生类别</th>
-                    <td>{{ current_user.examinee_category }}</td>
+                    <td>{{ user.examinee_category }}</td>
                 </tr>
 
                 <!--
@@ -131,19 +122,15 @@
 
                 <tr>
                     <th>班主任</th>
-                    <td>{{ current_user.headmaster }}</td>
+                    <td>{{ user.headmaster }}</td>
                     <th>有何特长</th>
-                    <td>{{ current_user.speciality }}</td>
+                    <td>{{ user.speciality }}</td>
                 </tr>
             </thead>
         </table>
     </form>
 
-    <div class="col-md-4">
-    {{ wtf.quick_form(form) }}
-    </div>
-
 
 </div>
-
+{% endif %}
 {% endblock %}

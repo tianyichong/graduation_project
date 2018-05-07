@@ -1,0 +1,30 @@
+{% extends "last_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block page_content %}
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% if number %}
+<div>
+	<form class="bs-example bs-example-form" role="form" method="get">
+		<table class="table">
+            <caption>修改后考生基本信息为</caption>
+                <tr>
+                    <th>考生号</th>
+                    <th>报名点</th>
+                    <th>考试类型</th>
+                    <th>考试科类</th>
+                </tr>
+                <tr>
+                    <td>{{ number.num }}</td>
+                    <td>{{ number.sign_point }}</td>
+                    <td>{{ number.exam_type }}</td>
+                    <td>{{ number.exam_department }}</td>
+                </tr>
+        </table>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

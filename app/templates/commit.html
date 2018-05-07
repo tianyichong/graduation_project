@@ -1,9 +1,43 @@
-{% extends "first_base.html" %}
+{% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+
+{% block bread %}
+{% if current_user.commitment and current_user.enrolment %}
+<ol class="breadcrumb">
+    <li></li>
+    <li class="active">commit</li>
+    <li>enroll</li>
+    <li><a href="{{ url_for('main.information') }}">information</a></li>
+</ol>
+{% else %}
+    {% if current_user.commitment %}
+    <ol class="breadcrumb">
+        <li></li>
+        <li class="active">commit</li>
+        <li><a href="{{ url_for('main.enroll') }}">enroll</a></li>
+        <li>information</li>
+    </ol>
+    {% else %}
+        <ol class="breadcrumb">
+            <li></li>
+            <li class="active">commit</li>
+            <li>enroll</li>
+            <li>information</li>
+        </ol>
+    {% endif %}
+{% endif %}
+{% endblock %}
+
 
 
 {% block page_content %}
 <div class="page-header">
     <h1>Hello</h1>
 </div>
+{% if not current_user.commitment %}
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+
+</div>
+{% endif %}
 {% endblock %}

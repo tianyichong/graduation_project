@@ -1,0 +1,40 @@
+{% extends "last_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block page_content %}
+<div>
+    <h4>目前报名人数为<span class="label label-default">{{ sum }}</span></h4>
+
+	<form class="bs-example bs-example-form" role="form" method="get">
+		<table class="table">
+            <caption>考生信息为</caption>
+                <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>考生号</th>
+                    <th>学籍号</th>
+                    <th>考生类别</th>
+                    <th>民族</th>
+                    <th>毕业院校</th>
+                    <th>班级</th>
+                </tr>
+
+                <tr>
+                    {% for user in users %}
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.sex }}</td>
+                    <td>{{ user.number }}</td>
+                    <td>{{ user.student_id }}</td>
+                    <td>{{ user.examinee_category }}</td>
+                    <td>{{ user.nation }}</td>
+                    <td>{{ user.high_school }}</td>
+                    <td>{{ user.class_in_school }}</td>
+                    {% endfor %}
+                </tr>
+
+        </table>
+    </form>
+</div>
+
+{% endblock %}

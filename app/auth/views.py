@@ -4,7 +4,7 @@ from . import auth
 from .forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, \
     ChangePasswordForm, ChangeEmailForm
 from .. import db
-from ..models import User
+from ..models import User, Role, Number
 from ..email import send_email
 
 
@@ -37,7 +37,13 @@ def login():
             login_user(user, form.remember_me.data)
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
-                next = url_for('main.commit')
+                if user.role_id == 2:
+                    next = url_for('main.welcome')
+                else:
+                    if current_user.enrolment:
+                        next = url_for('main.information')
+                    else:
+                        next = url_for('main.commit')
             return redirect(next)
         flash('Invalid username or password.')
     return render_template('auth/login.html', form=form)
