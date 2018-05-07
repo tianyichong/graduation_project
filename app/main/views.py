@@ -159,6 +159,7 @@ def check():
     return render_template('check.html', form=form, users=users, sum=sum)
 
 
+# 查询详细信息
 @admin_required
 @main.route('/query_information', methods=['GET', 'POST'])
 def query_information():
@@ -175,6 +176,7 @@ def query_information():
     return render_template('query_information.html', form=form)
 
 
+# 查询基本信息
 @admin_required
 @main.route('/query_essential_information', methods=['GET', 'POST'])
 def query_essential_information():
